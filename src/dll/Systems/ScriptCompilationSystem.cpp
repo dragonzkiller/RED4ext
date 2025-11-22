@@ -120,11 +120,11 @@ std::wstring ScriptCompilationSystem::GetCompilationArgs(const FixedWString& aOr
     if (m_hasScriptsBlob)
     {
         spdlog::info("Using scriptsBlobPath");
-        format_to(std::back_inserter(buffer), LR"(-compile "{}" "{}")", m_paths.GetR6Scripts(), m_scriptsBlobPath);
+        fmt::format_to(std::back_inserter(buffer), LR"(-compile "{}" "{}")", m_paths.GetR6Scripts(), m_scriptsBlobPath);
     }
     else
     {
-        format_to(std::back_inserter(buffer), aOriginal.str);
+        fmt::format_to(std::back_inserter(buffer), L"{}", aOriginal.str);
     }
     spdlog::info("Adding paths to redscript compilation:");
     auto pathsFilePath = m_paths.GetRedscriptPathsFile();
@@ -135,8 +135,8 @@ std::wstring ScriptCompilationSystem::GetCompilationArgs(const FixedWString& aOr
         pathsFile << path.wstring() << std::endl;
     }
     spdlog::info(L"Paths written to: '{}'", pathsFilePath);
-    format_to(std::back_inserter(buffer), LR"( -compilePathsFile "{}")", pathsFilePath);
-    return fmt::to_string(buffer);
+    fmt::format_to(std::back_inserter(buffer), LR"( -compilePathsFile "{}")", pathsFilePath);
+    return fmt::to_wstring(buffer);
 }
 
 const ScriptCompilationSystem::Map_t& ScriptCompilationSystem::GetScriptPaths() const
